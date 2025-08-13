@@ -1,1 +1,35 @@
-dd
+#include <iostream>
+#include <deque>
+#include <utility>
+using namespace std;
+typedef pair<int, int> Node;
+
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int num, L;
+	deque<Node> myNode;
+	cin >> num >> L;
+	
+	for (int i = 0; i < num; i++) {
+		int now;
+		cin >> now;
+
+		// 마지막 값이 now의 숫자보다 크면 삭제
+		// Node의 first을 숫자로, 노드는 first, second ...
+		while (myNode.size() && myNode.back().first > now) {
+			myNode.pop_back();
+		}
+		// 덱에 now 노드 추가
+		myNode.push_back(Node(now, i));
+		// 덱 인덱스 범위 > 윈도우크기이면 맨앞 노드 제거
+		if (myNode.front().second <= i - L) {
+			myNode.pop_front();
+		}
+		// 맨앞 노드 숫자 출력
+		cout << myNode.front().first << ' ';
+	}
+}
