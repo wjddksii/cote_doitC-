@@ -1,0 +1,60 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int seq;
+	bool flag = true;
+	cin >> seq;
+
+	vector<int> arr(seq, 0);
+	vector<char> result;
+	stack<int> stk;
+
+	// 수열을 저장한다.
+	for (int i = 0; i < seq; i++) {
+		cin >> arr[i];
+	}
+
+	int num = 1; // 오름차순 자연수
+	// stk을 이용해서 1부터 pop, push를 반복하여 수열을 만든다.
+	for (int i = 0; i < seq; i++) {
+		int now = arr[i];
+
+		// 현재 수열 now가 자연수 num보다 클 때
+		// 자연수를 now까지 push하고, 마지막 now를 pop
+		if (num <= now) {
+			while (num <= now) {
+				stk.push(num++);
+				result.push_back('+');
+			}
+			stk.pop();
+			result.push_back('-');
+		}
+		
+		// 현재 수열 nowd가 자연수 num보다 작을 때
+		// top이 now가 아니면, "NO" 출력 후 종료
+		// top이 now이면, 계속 pop 후 for문 진행
+		else {
+			int tmp = stk.top();
+			stk.pop();
+			if (tmp != now) {  // tmp > now로 해도 된다. 어차피 남아있는 수는 다 목표 숫자보다 작음
+				cout << "NO";
+				flag = false;
+				break;
+			}
+			result.push_back('-');
+		}
+	}
+
+	if (flag) {
+		for (int i = 0; i < result.size(); i++) {
+			cout << result[i] << '\n';
+		}
+	}
+}
